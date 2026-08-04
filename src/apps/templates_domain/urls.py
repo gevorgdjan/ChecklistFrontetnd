@@ -1,5 +1,6 @@
 from django.urls import path
 
+from apps.templates_domain.pages.delete.page import ChecklistTemplateDeleteView
 from apps.templates_domain.pages.detail.page import ChecklistTemplateDetailView
 from apps.templates_domain.pages.p_list.page import ChecklistTemplateListView
 from apps.templates_domain.pages.update.page import ChecklistTemplateUpdateView
@@ -22,4 +23,5 @@ urlpatterns = [
         ChecklistTemplateUpdateView.as_view(),
         name='template-update',
     ),
+    path('<int:pk>/delete/', ChecklistTemplateDeleteView.as_view(), name='template-delete'),
 ]

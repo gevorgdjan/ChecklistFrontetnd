@@ -3,7 +3,7 @@ from polipak_sdk.base.base_api import BaseApi
 
 
 class TemplatesApi(BaseApi):
-    BASE_PATH = '/api/checklist/templates'
+    BASE_PATH = '/api/v1/templates'
 
     def list(self):
         return self._client.request(
@@ -22,7 +22,7 @@ class TemplatesApi(BaseApi):
         return self._client.request(
             'POST',
             path=self.BASE_PATH + '/',
-            data=data,
+            json=data,
         )
 
     def update(
@@ -34,4 +34,10 @@ class TemplatesApi(BaseApi):
             'PUT',
             path=f'{self.BASE_PATH}/{template_id}/',
             json=data,
+        )
+
+    def delete(self, template_id: int):
+        return self._client.request(
+            'DELETE',
+            path=f'{self.BASE_PATH}/{template_id}/',
         )

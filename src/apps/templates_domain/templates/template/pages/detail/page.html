@@ -27,8 +27,9 @@
                 <div>
                     <dt class="text-sm font-medium text-gray-500">Тип чек-листа</dt>
                     <dd class="mt-1">
+                        <!-- ИСПОЛЬЗУЕМ _display -->
                         <span class="rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700">
-                            {{ template.checklist_type_label }}
+                            {{ template.checklist_type_display }}
                         </span>
                     </dd>
                 </div>
@@ -67,7 +68,10 @@
                                 <tr class="hover:bg-gray-50">
                                     <td class="px-4 py-3 text-sm text-gray-500">{{ field.order }}</td>
                                     <td class="px-4 py-3 font-medium text-gray-900">{{ field.name }}</td>
-                                    <td class="px-4 py-3 text-sm text-gray-600">{{ field.field_type_label }}</td>
+
+                                    <!-- ИСПОЛЬЗУЕМ _display -->
+                                    <td class="px-4 py-3 text-sm text-gray-600">{{ field.field_type_display }}</td>
+
                                     <td class="px-4 py-3">
                                         {% if field.choices %}
                                             <div class="flex flex-wrap gap-2">

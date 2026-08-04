@@ -1,0 +1,27 @@
+<div class="mb-6 flex items-center justify-between">
+            <div>
+                <a href="{% url 'templates_domain:template-list' %}"
+                   class="text-sm text-blue-600 hover:text-blue-700">← К списку шаблонов</a>
+                <h1 class="mt-2 text-2xl font-semibold text-gray-900">Шаблон чек-листа</h1>
+                <p class="mt-1 text-sm text-gray-500">UID оборудования: {{ template.equipment_uid }}</p>
+            </div>
+
+            <div class="flex items-center gap-3">
+
+                <a href="{% url 'templates_domain:template-update' template.id %}"
+                   class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700">
+                    Изменить
+                </a>
+
+                <form method="post"
+                      action="{% url 'templates_domain:template-delete' template.id %}"
+                      onsubmit="return confirm('Вы уверены, что хотите удалить этот шаблон? Это действие необратимо.');">
+                    {% csrf_token %}
+                    <button type="submit"
+                            class="rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-600 transition hover:bg-red-100 hover:text-red-700">
+                        Удалить
+                    </button>
+                </form>
+
+            </div>
+        </div>
