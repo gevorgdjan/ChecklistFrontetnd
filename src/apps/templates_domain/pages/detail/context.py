@@ -1,4 +1,3 @@
-from datetime import datetime
 from typing import Any
 
 from polipak_sdk.checklist.factories import get_checklist_client
@@ -57,30 +56,30 @@ def get_checklist_template_context(
     # }
 
     checklist_type_labels = {
-        "INSPECTION": "Осмотр",
-        "ACCEPTANCE": "Приемка",
-        "HANDOVER": "Сдача",
+        'INSPECTION': 'Осмотр',
+        'ACCEPTANCE': 'Приемка',
+        'HANDOVER': 'Сдача',
     }
 
     field_type_labels = {
-        "STRING": "Строка",
-        "INTEGER": "Число",
-        "CHOICE": "Выбор из списка",
-        "CHECKBOX": "Флажок",
-        "AUTO": "Автоматическое",
+        'STRING': 'Строка',
+        'INTEGER': 'Число',
+        'CHOICE': 'Выбор из списка',
+        'CHECKBOX': 'Флажок',
+        'AUTO': 'Автоматическое',
     }
 
-    template["checklist_type_label"] = checklist_type_labels.get(
-        template["checklist_type"],
-        template["checklist_type"],
+    template['checklist_type_label'] = checklist_type_labels.get(
+        template['checklist_type'],
+        template['checklist_type'],
     )
 
-    for field in template["fields"]:
-        field["field_type_label"] = field_type_labels.get(
-            field["field_type"],
-            field["field_type"],
+    for field in template['fields']:
+        field['field_type_label'] = field_type_labels.get(
+            field['field_type'],
+            field['field_type'],
         )
 
     return {
-        "template": template,
+        'template': template,
     }

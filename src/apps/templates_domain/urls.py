@@ -8,18 +8,18 @@ from apps.templates_domain.pages.update.page import ChecklistTemplateUpdateView
 app_name = 'templates_domain'
 urlpatterns = [
     path(
-        "templates/",
+        'templates/',
         ChecklistTemplateListView.as_view(),
-        name="template-list",
+        name='template-list',
     ),
     path(
-        "templates/<int:pk>/",
+        'templates/<int:pk>/',
         ChecklistTemplateDetailView.as_view(),
-        name="template-detail",
+        name='template-detail',
     ),
     path(
-        "templates/<int:pk>/edit/",
+        'templates/<int:pk>/edit/',
         ChecklistTemplateUpdateView.as_view(),
-        name="template-update",
+        name='template-update',
     ),
 ]

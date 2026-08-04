@@ -1,7 +1,6 @@
 from django.views.generic import TemplateView
 
 from apps.templates_domain.pages.detail.context import get_checklist_template_context
-from apps.templates_domain.pages.p_list.context import get_checklist_templates_context
 
 
 class ChecklistTemplateDetailView(TemplateView):
