@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+        <script defer
+                src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+        <link rel="stylesheet" href="{% static 'css/output.css' %}">
+        <title>ProtoHub</title>
+    </head>
+    <body class="bg-gray-100">
+        <div x-data="{ sidebarOpen: false }" class="flex min-h-screen">
+            {% include 'ui/partials/sidebar.html' %}
+            <div class="flex-1 flex flex-col">
+                {% include 'ui/partials/topbar.html' %}
+                <main class="flex-1 p-8 overflow-x-auto">
+                    {% block content %}{% endblock %}
+                </main>
+            </div>
+        </div>
+        <div id="overlay-container"></div>
+        <script>
+function fileUploader() {
+
+    return {
+
+        files: [],
+
+        addFiles(event) {
+
+            const selectedFiles = Array.from(event.target.files)
+
+            this.files = [
+                ...this.files,
+                ...selectedFiles,
+            ]
+
+            this.syncInputFiles()
+        },
+
+        removeFile(index) {
+
+            this.files.splice(index, 1)
+
+            this.syncInputFiles()
+        },
+
+        syncInputFiles() {
+
+            const dataTransfer = new DataTransfer()
+
+            this.files.forEach(file => {
+                dataTransfer.items.add(file)
+            })
+
+            this.$refs.input.files = dataTransfer.files
+        },
+
+        formatFileSize(bytes) {
+
+            if (bytes < 1024) {
+                return `${bytes} B`
+            }
+
+            if (bytes < 1024 * 1024) {
+                return `${(bytes / 1024).toFixed(1)} KB`
+            }
+
+            return `${(bytes / 1024 / 1024).toFixed(1)} MB`
+        }
+    }
+}
+
+        </script>
+        {% block scripts %}{% endblock %}
+        <script>
+        document.body.addEventListener(
+            'htmx:configRequest',
+            (event) => {
+
+                event.detail.headers['X-CSRFToken'] =
+                    '{{ csrf_token }}'
+            }
+        )
+        </script>
+    </body>
+</html>

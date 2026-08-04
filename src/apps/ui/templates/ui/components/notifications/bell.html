@@ -1,0 +1,20 @@
+<div class="relative" x-data="{ open: false }">
+    <button @click="open = !open"
+            class="relative p-2 rounded-xl hover:bg-gray-100 transition">
+        <span class="text-xl">🔔</span>
+        <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+    </button>
+    <div x-show="open"
+         @click.outside="open = false"
+         x-transition
+         class="absolute right-0 top-12 z-50">
+        <div hx-get="/ui/notifications/"
+             hx-trigger="load"
+             hx-target="this"
+             hx-swap="innerHTML">
+            <div class="bg-white rounded-2xl shadow-xl p-6 w-80">
+                <div class="text-sm text-gray-500">Загрузка уведомлений...</div>
+            </div>
+        </div>
+    </div>
+</div>

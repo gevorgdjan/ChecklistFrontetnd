@@ -1,0 +1,27 @@
+{
+  "name": "protohub",
+  "version": "1.0.0",
+  "description": "Установка ```shell npm init -y npm install -D tailwindcss @tailwindcss/cli ```",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tailwind:watch": "tailwindcss -i ./src/static/src/input.css -o ./src/static/css/output.css --watch",
+    "tailwind:build": "tailwindcss -i ./src/static/src/input.css -o ./src/static/css/output.css --minify"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "tailwindcss": "^4.3.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zamesov26/ProtoHub.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Zamesov26/ProtoHub/issues"
+  },
+  "homepage": "https://github.com/Zamesov26/ProtoHub#readme"
+}

@@ -1,0 +1,7 @@
+**/.idea
+**/__pycache__
+**/.venv
+.env
+.local
+src/static/css/output.css
+node_modules/

@@ -1,0 +1,41 @@
+<aside :class="sidebarOpen ? 'w-64' : 'w-20'"
+       class="bg-white shadow transition-all duration-300 overflow-hidden flex flex-col">
+    <div class="p-4 flex justify-center">
+        <button @click="sidebarOpen = !sidebarOpen"
+                class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 transition">☰</button>
+    </div>
+    <nav class="flex-1 px-3 pb-4 space-y-1">
+        <div x-show="sidebarOpen"
+             x-transition
+             class="text-xs uppercase text-gray-400 px-3 pt-2 pb-1">Planner</div>
+        <a href="/claims/"
+           class="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-gray-100 transition">
+            <span class="text-xl shrink-0">📋</span>
+            <span x-show="sidebarOpen" x-transition>Рекламации</span>
+        </a>
+        <a href="/investigations/"
+           class="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-gray-100 transition">
+            <span class="text-xl shrink-0">🔍</span>
+            <span x-show="sidebarOpen" x-transition>Расследования</span>
+        </a>
+        <a href="/tasks/"
+           class="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-gray-100 transition">
+            <span class="text-xl shrink-0">✅</span>
+            <span x-show="sidebarOpen" x-transition>Задачи</span>
+        </a>
+        <a href="/root-causes/"
+           class="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-gray-100 transition">
+            <span class="text-xl shrink-0">🌳</span>
+            <span x-show="sidebarOpen" x-transition>Коренные причины</span>
+        </a>
+        <div class="my-3 border-t border-gray-200"></div>
+        <div x-show="sidebarOpen"
+             x-transition
+             class="text-xs uppercase text-gray-400 px-3 pt-2 pb-1">Настройка</div>
+        <a href="/workflow/definitions/"
+           class="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-gray-100 transition">
+            <span class="text-xl shrink-0">⚙️</span>
+            <span x-show="sidebarOpen" x-transition>Шаблоны процессов</span>
+        </a>
+    </nav>
+</aside>

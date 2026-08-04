@@ -1,0 +1,96 @@
+{% extends 'ui/layouts/base.html' %}
+{% block content %}
+    <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <div class="mb-8 flex items-center justify-between gap-4">
+            <div>
+                <h1 class="text-2xl font-semibold text-gray-900">Шаблоны чек-листов</h1>
+                <p class="mt-1 text-sm text-gray-500">Список шаблонов для осмотра, приёмки и сдачи оборудования.</p>
+            </div>
+            <a href="#"
+               class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700">
+                Создать шаблон
+            </a>
+        </div>
+        {% if templates %}
+            <div class="space-y-4">
+                {% for template in templates %}
+                    <article class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+                        <div class="flex flex-col gap-4 border-b border-gray-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+                            <div>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <h2 class="text-lg font-semibold text-gray-900">{{ template.equipment_uid }}</h2>
+                                    <span class="rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700">
+                                        {{ template.checklist_type_label }}
+                                    </span>
+                                </div>
+                                <p class="mt-1 text-sm text-gray-500">
+                                    Шаблон №{{ template.id }}
+                                    ·
+                                    Создан:
+                                    {{ template.created_at|date:"d.m.Y H:i" }}
+                                </p>
+                            </div>
+                            <a href="{% url 'templates_domain:template-detail' template.id %}"
+                               class="rounded-lg border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50">
+                                Открыть
+                            </a>
+                            <a href="{% url 'templates_domain:template-update' template.id %}"
+                               class="rounded-lg border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50">
+                                Изменить
+                            </a>
+                        </div>
+                        <div class="px-5 py-4">
+                            <div class="mb-3 flex items-center justify-between">
+                                <h3 class="text-sm font-semibold text-gray-900">Поля шаблона</h3>
+                                <span class="text-sm text-gray-500">Всего: {{ template.fields|length }}</span>
+                            </div>
+                            {% if template.fields %}
+                                <div class="overflow-x-auto">
+                                    <table class="min-w-full divide-y divide-gray-200">
+                                        <thead>
+                                            <tr>
+                                                <th class="px-3 py-2 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Порядок</th>
+                                                <th class="px-3 py-2 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Название</th>
+                                                <th class="px-3 py-2 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Тип поля</th>
+                                                <th class="px-3 py-2 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Варианты</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-gray-100">
+                                            {% for field in template.fields %}
+                                                <tr>
+                                                    <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">{{ field.order }}</td>
+                                                    <td class="px-3 py-3 text-sm font-medium text-gray-900">{{ field.name }}</td>
+                                                    <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-600">{{ field.field_type_label }}</td>
+                                                    <td class="px-3 py-3 text-sm text-gray-600">
+                                                        {% if field.choices %}
+                                                            <div class="flex flex-wrap gap-1">
+                                                                {% for choice in field.choices %}
+                                                                    <span class="rounded-md bg-gray-100 px-2 py-1 text-xs text-gray-700">{{ choice.value }}</span>
+                                                                {% endfor %}
+                                                            </div>
+                                                        {% else %}
+                                                            <span class="text-gray-400">—</span>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% else %}
+                                <div class="rounded-lg border border-dashed border-gray-300 px-4 py-8 text-center text-sm text-gray-500">
+                                    В шаблоне пока нет полей.
+                                </div>
+                            {% endif %}
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="rounded-xl border border-dashed border-gray-300 bg-white px-6 py-16 text-center">
+                <h2 class="text-lg font-semibold text-gray-900">Шаблоны не найдены</h2>
+                <p class="mt-2 text-sm text-gray-500">Создайте первый шаблон чек-листа для оборудования.</p>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
