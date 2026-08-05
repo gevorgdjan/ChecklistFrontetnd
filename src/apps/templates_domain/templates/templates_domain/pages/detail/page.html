@@ -27,9 +27,8 @@
                 <div>
                     <dt class="text-sm font-medium text-gray-500">Тип чек-листа</dt>
                     <dd class="mt-1">
-                        <!-- ИСПОЛЬЗУЕМ _display -->
                         <span class="rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700">
-                            {{ template.checklist_type_display }}
+                            {{ template.checklist_type_display|default:template.checklist_type }}
                         </span>
                     </dd>
                 </div>
@@ -42,7 +41,7 @@
                 <div>
                     <dt class="text-sm font-medium text-gray-500">Создан</dt>
                     <dd class="mt-1 text-sm text-gray-900">
-                        {{ template.created_at|date:"d.m.Y H:i" }}
+                        {{ template.created_at }}
                     </dd>
                 </div>
             </dl>
@@ -70,7 +69,7 @@
                                     <td class="px-4 py-3 font-medium text-gray-900">{{ field.name }}</td>
 
                                     <!-- ИСПОЛЬЗУЕМ _display -->
-                                    <td class="px-4 py-3 text-sm text-gray-600">{{ field.field_type_display }}</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">{{ field.field_type_display|default:field.field_type }}</td>
 
                                     <td class="px-4 py-3">
                                         {% if field.choices %}

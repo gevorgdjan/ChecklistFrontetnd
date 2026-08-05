@@ -1,0 +1,116 @@
+{% extends 'ui/layouts/base.html' %}
+{% block content %}
+<div class="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
+    <div class="mb-6">
+        <a href="{% url 'results_domain:result-detail' result_id %}" class="text-sm text-blue-600 hover:text-blue-700">← Вернуться к анкете</a>
+        <h1 class="mt-2 text-2xl font-semibold text-gray-900">Редактирование чек-листа №{{ result_id }}</h1>
+    </div>
+    <div x-data="checklistUpdater({{ template_json }}, {{ answers_json }}, '{{ user_uid }}')" class="space-y-6">
+        <form id="checklistUpdateForm" method="post" @submit.prevent="submitForm">
+            {% csrf_token %}
+            <div class="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden mb-6">
+                <div class="bg-blue-50 px-6 py-4 border-b border-blue-100 flex justify-between items-center">
+                    <div>
+                        <h2 class="text-lg font-bold text-blue-900">Бланк: <span x-text="template.checklist_type_display"></span></h2>
+                        <p class="text-sm text-blue-700">Оборудование: <span x-text="template.equipment_uid"></span></p>
+                    </div>
+                </div>
+                <div class="p-6 bg-gray-50 border-b border-gray-200">
+                    <label class="mb-2 block text-sm font-medium text-gray-700">Кто заполняет? (Ваш UID)</label>
+                    <input type="text" x-model="user_uid" required class="w-full max-w-md rounded-lg border-gray-300 px-3 py-2 bg-gray-100 text-gray-500 cursor-not-allowed" readonly title="Сменить пользователя в сохраненной анкете нельзя">
+                </div>
+                <div class="p-6 space-y-6">
+                    <template x-for="field in template.fields" :key="field.id">
+                        <div class="border-b border-gray-100 pb-4 last:border-0 last:pb-0">
+                            <label class="block text-sm font-medium text-gray-800 mb-2">
+                                <span x-text="field.name"></span> <span class="text-red-500">*</span>
+                            </label>
+                            <template x-if="field.field_type === 'STRING'">
+                                <input type="text" x-model="answers[field.id]" required class="w-full max-w-lg rounded-lg border-gray-300 px-3 py-2">
+                            </template>
+                            <template x-if="field.field_type === 'INTEGER'">
+                                <input type="number" x-model="answers[field.id]" required class="w-full max-w-xs rounded-lg border-gray-300 px-3 py-2">
+                            </template>
+                            <template x-if="field.field_type === 'CHOICE'">
+                                <select x-model="answers[field.id]" required class="w-full max-w-xs rounded-lg border-gray-300 px-3 py-2 bg-white">
+                                    <option value="" disabled>Выберите вариант...</option>
+                                    <template x-for="choice in field.choices">
+                                        <option :value="choice.value" x-text="choice.value" :selected="answers[field.id] === choice.value"></option>
+                                    </template>
+                                </select>
+                            </template>
+                            <template x-if="field.field_type === 'CHECKBOX'">
+                                <label class="inline-flex items-center cursor-pointer mt-1">
+                                    <input type="checkbox" x-model="answers[field.id]" class="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                    <span class="ml-2 text-sm text-gray-700">Да / Подтверждаю</span>
+                                </label>
+                            </template>
+                            <template x-if="field.field_type === 'AUTO'">
+                                <input type="text" x-model="answers[field.id]" readonly class="w-full max-w-xs rounded-lg border-gray-200 bg-gray-100 text-gray-500 px-3 py-2 cursor-not-allowed">
+                            </template>
+
+                        </div>
+                    </template>
+                </div>
+            </div>
+            <div class="flex justify-end gap-3">
+                <a href="{% url 'results_domain:result-detail' result_id %}" class="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium hover:bg-gray-50">
+                    Отмена
+                </a>
+                <button type="submit" class="rounded-lg bg-blue-600 px-5 py-2 text-sm font-medium text-white hover:bg-blue-700">
+                    Сохранить изменения
+                </button>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<script>
+function checklistUpdater(template, initialAnswers, userUid) {
+    return {
+        template: template,
+        user_uid: userUid,
+        answers: initialAnswers,
+
+        async submitForm() {
+            let processedAnswers = {};
+            for (const [fieldId, value] of Object.entries(this.answers)) {
+                processedAnswers[fieldId] = String(value);
+            }
+
+            const payload = {
+                equipment_uid: this.template.equipment_uid,
+                checklist_type: this.template.checklist_type,
+                user_uid: this.user_uid,
+                answers: processedAnswers
+            };
+
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            try {
+                const response = await fetch(window.location.href, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.status === 'success') {
+                    window.location.href = result.redirect_url;
+                } else {
+                    alert('Ошибка при сохранении: ' + (result.message || 'Неизвестная ошибка'));
+                }
+            } catch (error) {
+                console.error('Ошибка сети:', error);
+                alert('Произошла ошибка сети при отправке формы.');
+            }
+        }
+    }
+}
+</script>
+{% endblock %}

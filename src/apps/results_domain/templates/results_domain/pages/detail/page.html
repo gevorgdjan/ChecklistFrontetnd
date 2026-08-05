@@ -1,7 +1,7 @@
 {% extends 'ui/layouts/base.html' %}
 {% block content %}
     <div class="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
-        
+
         <!-- Шапка с кнопками действий -->
         <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
@@ -10,17 +10,12 @@
                 <h1 class="mt-2 text-2xl font-semibold text-gray-900">Результат чек-листа</h1>
                 <p class="mt-1 text-sm text-gray-500">Анкета №{{ result.id }}</p>
             </div>
-            
-            <!-- БЛОК КНОПОК -->
             <div class="flex items-center gap-3">
-                <!-- Временно поставим # пока не сделаем страницу update -->
-                <a href="#"
+                <a href="{% url 'results_domain:result-update' result.id %}"
                    class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700">
                     Изменить
                 </a>
-                
-                <!-- ФОРМА УДАЛЕНИЯ -->
-                <form method="post" 
+                <form method="post"
                       action="{% url 'results_domain:result-delete' result.id %}" 
                       onsubmit="return confirm('Вы уверены, что хотите удалить эту анкету?');">
                     {% csrf_token %}
@@ -31,8 +26,6 @@
                 </form>
             </div>
         </div>
-
-        <!-- Основная информация -->
         <div class="rounded-xl border border-gray-200 bg-white shadow-sm mb-8">
             <div class="border-b border-gray-200 px-6 py-5">
                 <h2 class="text-lg font-semibold text-gray-900">Данные проверки</h2>
@@ -42,7 +35,7 @@
                     <dt class="text-sm font-medium text-gray-500">Тип чек-листа</dt>
                     <dd class="mt-1">
                         <span class="rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700">
-                            {{ result.checklist_type_display }}
+                            {{ result.checklist_type }}
                         </span>
                     </dd>
                 </div>
@@ -60,22 +53,17 @@
                 <div>
                     <dt class="text-sm font-medium text-gray-500">Дата и время</dt>
                     <dd class="mt-1 text-sm text-gray-900">
-                        {{ result.created_at|date:"d.m.Y в H:i" }}
+                        {{ result.created_at }}
                     </dd>
                 </div>
             </dl>
         </div>
-
-        <!-- Ответы -->
         <div class="rounded-xl border border-gray-200 bg-white shadow-sm">
             <div class="flex items-center justify-between border-b border-gray-200 px-6 py-5">
                 <h2 class="text-lg font-semibold text-gray-900">Ответы пользователя</h2>
                 <span class="text-sm text-gray-500">{{ result.answers|length }} заполненных полей
-
-
 </span>
             </div>
-            
             {% if result.answers %}
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
@@ -93,10 +81,9 @@
                                         {{ answer.field_name }}
                                     </td>
                                     <td class="px-6 py-4 text-sm text-gray-500">
-                                        {{ answer.field_type_display }}
+                                        {{ answer.field_type }}
                                     </td>
                                     <td class="px-6 py-4 text-sm text-gray-900 font-medium">
-                                        <!-- Красивая подсветка для булевых значений -->
                                         {% if answer.value == 'true' %}
                                             <span class="text-green-600 flex items-center gap-1">
                                                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>

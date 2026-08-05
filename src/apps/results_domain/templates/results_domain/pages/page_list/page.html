@@ -1,7 +1,7 @@
 {% extends 'ui/layouts/base.html' %}
 {% block content %}
     <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        
+
         <div class="mb-8 flex items-center justify-between gap-4">
             <div>
                 <h1 class="text-2xl font-semibold text-gray-900">Заполненные чек-листы</h1>
@@ -25,12 +25,12 @@
         </form>
                 <p class="mt-1 text-sm text-gray-500">История всех осмотров, приемок и сдач оборудования.</p>
             </div>
-            <a href="#"
+            <a href="create/"
                class="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-green-700">
                 + Заполнить чек-лист
             </a>
         </div>
-        
+
         {% if results %}
             <div class="space-y-3">
                 {% for result in results %}
@@ -41,7 +41,7 @@
                                 <div class="mt-1 flex items-center gap-2">
                                     <p class="text-base font-bold text-gray-900">{{ result.equipment_uid }}</p>
                                     <span class="inline-block rounded-full bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700 border border-blue-100">
-                                        {{ result.checklist_type_display }}
+                                        {{ result.checklist_type }}
                                     </span>
                                 </div>
                             </div>
@@ -55,7 +55,7 @@
                             <div>
                                 <p class="text-xs font-semibold uppercase tracking-wider text-gray-500">Дата</p>
                                 <p class="mt-1 text-sm font-medium text-gray-700">
-                                    {{ result.created_at|date:"d.m.Y в H:i" }}
+                                    {{ result.created_at }}
                                 </p>
                             </div>
                             <div>

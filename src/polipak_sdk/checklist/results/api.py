@@ -22,3 +22,14 @@ class ResultsApi(BaseApi):
         return self._client.request('POST', path=f'{self.BASE_PATH}/',
                                     json=data)
 
+    def update(
+        self,
+        result_id: int,
+        data: dict,
+    ):
+        return self._client.request(
+            'PUT',
+            path=f'{self.BASE_PATH}/{result_id}/',
+            json=data,
+        )
+

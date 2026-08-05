@@ -61,10 +61,6 @@ def get_checklist_results_context(
     #     }
     # ]
 
-    if isinstance(results.get('created_at'), str):
-        date_str = results['created_at'].replace('Z', '+00:00')
-        results['created_at'] = datetime.datetime.fromisoformat(date_str)
-
     return {
         'results': results,
     }
