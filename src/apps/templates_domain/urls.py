@@ -5,13 +5,20 @@ from apps.templates_domain.pages.detail.page import ChecklistTemplateDetailView
 from apps.templates_domain.pages.p_list.page import ChecklistTemplateListView
 from apps.templates_domain.pages.update.page import ChecklistTemplateUpdateView
 
-# TODO: распилить на несколько файлов.
+from apps.templates_domain.pages.create.page import ChecklistTemplateCreateView
+
 app_name = 'templates_domain'
+
 urlpatterns = [
     path(
         'templates/',
         ChecklistTemplateListView.as_view(),
         name='template-list',
+    ),
+    path(
+        'templates/create/',
+        ChecklistTemplateCreateView.as_view(),
+        name='template-create'
     ),
     path(
         'templates/<int:pk>/',
@@ -23,5 +30,8 @@ urlpatterns = [
         ChecklistTemplateUpdateView.as_view(),
         name='template-update',
     ),
-    path('<int:pk>/delete/', ChecklistTemplateDeleteView.as_view(), name='template-delete'),
+    path(
+        '<int:pk>/delete/',
+        ChecklistTemplateDeleteView.as_view(),
+        name='template-delete'),
 ]

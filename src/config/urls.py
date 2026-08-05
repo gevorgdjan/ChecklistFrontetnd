@@ -24,6 +24,10 @@ urlpatterns = [
         '',
         include('apps.templates_domain.urls'),
     ),
+    path(
+        '',
+        include('apps.results_domain.urls'),
+    ),
     path('ui/', include('apps.ui.urls')),
     path(
         'empty/',

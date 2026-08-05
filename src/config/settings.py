@@ -13,18 +13,10 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 import os
 from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-print(BASE_DIR)
-
-# Quick-start development settings - unsuitable for productio
-# See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-$#o&y%vds#n*&tv-r+=y#c%!_pc#9a1epp25gck_8=72(7(&_b'
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
@@ -43,6 +35,7 @@ INSTALLED_APPS = [
     'apps.users.apps.UsersConfig',
     'apps.ui.apps.UiConfig',
     'apps.templates_domain.apps.TemplateConfig',
+    'apps.results_domain.apps.ResultsDomainConfig',
 ]
 
 MIDDLEWARE = [
@@ -84,8 +77,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('POSTGRES_DB', 'protohub'),
         'USER': os.getenv('POSTGRES_USER', 'postgres'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', '153678211910'),
-        'HOST': os.getenv('DB_HOST', 'localhost'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', '1234567890'),
+        'HOST': os.getenv('DB_HOST', '127.0.0.1'),
         'PORT': os.getenv('DB_PORT', '5432'),
         'TEST': {
             'NAME': 'test_protohub',

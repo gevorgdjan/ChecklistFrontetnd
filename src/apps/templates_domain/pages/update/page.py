@@ -1,5 +1,6 @@
 import json
 
+from django.contrib import messages
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
@@ -15,7 +16,7 @@ def json_serial(obj):
 
 
 class ChecklistTemplateUpdateView(TemplateView):
-    template_name = 'template/pages/update/page.html'
+    template_name = 'templates_domain/pages/update/page.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -29,14 +30,17 @@ class ChecklistTemplateUpdateView(TemplateView):
 
     def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
         payload = json.loads(request.POST['data'])
-
         client = get_checklist_client()
-        client.templates.update(
-            template_id=self.kwargs['pk'],
-            data=payload,
-        )
 
-        return redirect(
-            'templates_domain:template-detail',
-            pk=self.kwargs['pk'],
-        )
+        try:
+            client.templates.update(template_id=self.kwargs['pk'],
+                                    data=payload)
+            messages.success(request, "Шаблон успешно обновлен.")
+        except Exception as e:
+            messages.error(
+                request,
+        "Ошибка: Невозможно изменить шаблон, по нему уже есть заполненные анкеты."
+            )
+
+        return redirect('templates_domain:template-detail',
+                        pk=self.kwargs['pk'])

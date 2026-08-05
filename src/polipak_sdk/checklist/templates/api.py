@@ -5,11 +5,13 @@ from polipak_sdk.base.base_api import BaseApi
 class TemplatesApi(BaseApi):
     BASE_PATH = '/api/v1/templates'
 
-    def list(self):
-        return self._client.request(
-            'GET',
-            path=self.BASE_PATH + '/',
-        )
+    def list(self, equipment_uid: str = None, checklist_type: str = None):
+        params = {}
+        if equipment_uid: params['equipment_uid'] = equipment_uid
+        if checklist_type: params['checklist_type'] = checklist_type
+
+        return self._client.request('GET', path=f'{self.BASE_PATH}/',
+                                    params=params)
 
     def get(self, template_id):
         return self._client.request(
@@ -19,6 +21,7 @@ class TemplatesApi(BaseApi):
 
     def create(self, data):
 
+        print(data)
         return self._client.request(
             'POST',
             path=self.BASE_PATH + '/',

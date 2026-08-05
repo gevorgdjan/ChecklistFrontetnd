@@ -4,7 +4,7 @@ from apps.templates_domain.pages.detail.context import get_checklist_template_co
 
 
 class ChecklistTemplateDetailView(TemplateView):
-    template_name = "template/pages/detail/page.html"
+    template_name = "templates_domain/pages/detail/page.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect
 from django.views import View
@@ -12,10 +13,16 @@ class ChecklistTemplateDeleteView(View):
 
     def post(self, request: HttpRequest, pk: int, *args, **kwargs) -> HttpResponse:
         # --- РАБОЧИЙ ВАРИАНТ ---
-        # client = get_checklist_client()
-        # client.templates.delete(template_id=pk)
+        try:
+            client = get_checklist_client()
+            client.templates.delete(template_id=pk)
 
-        # --- ЗАГЛУШКА ---
-        print(f"[MOCK] Запрос на удаление шаблона с ID: {pk}")
+            # --- ЗАГЛУШКА ---
+            # print(f"[MOCK] Запрос на удаление шаблона с ID: {pk}")
+        except Exception as e:
+            (messages.error(
+                request,
+        "Невозможно удалить шаблон: по нему уже есть заполненные анкеты."
+            ))
 
         return redirect('templates_domain:template-list')

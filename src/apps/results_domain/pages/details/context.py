@@ -4,15 +4,14 @@ from typing import Any
 from polipak_sdk.checklist.factories import get_checklist_client
 
 
-def get_checklist_template_context(
+def get_checklist_result_detail_context(
         template_id: int,
 ) -> dict[str, Any]:
     """
-    Возвращает контекст страницы шаблона чек-листа.
+    Возвращает контекст страницы анкеты чек-листа.
     """
-
     client = get_checklist_client()
-    template = client.templates.get(template_id)
+    template = client.results.get(template_id)
 
     # template = {
     #     "id": template_id,

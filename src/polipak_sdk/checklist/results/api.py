@@ -2,23 +2,23 @@
 from polipak_sdk.base.base_api import BaseApi
 
 
-class TemplatesApi(BaseApi):
-    BASE_PATH = '/api/checklist'
+class ResultsApi(BaseApi):
+    BASE_PATH = '/api/v1/results'
 
-    # def short_tree(self, serial: str):
-    #     return self._client.request(
-    #         'GET', path=self.BASE_PATH + '/' + serial, actor=ActorContext(type='system')
-    #     )
+    def list(self, equipment_uid: str = None, user_uid: str = None):
+        """Получить историю анкет с фильтрацией"""
+        params = {}
+        if equipment_uid: params['equipment_uid'] = equipment_uid
+        if user_uid: params['user_uid'] = user_uid
 
-    # def product_info(self, serial: str):
-    #     response = self._client.request(
-    #         'GET',
-    #         path='/api/v1/track/tree/',
-    #         params={
-    #             'serial': serial,
-    #             'direction': 'from_product',
-    #         },
-    #         actor=ActorContext(type='system'),
-    #     )
-    #
-    #     return response
+        return self._client.request('GET', path=f'{self.BASE_PATH}/',
+                                    params=params)
+
+    def get(self, result_id: int):
+        return self._client.request('GET',
+                                    path=f'{self.BASE_PATH}/{result_id}/')
+
+    def create(self, data: dict):
+        return self._client.request('POST', path=f'{self.BASE_PATH}/',
+                                    json=data)
+
