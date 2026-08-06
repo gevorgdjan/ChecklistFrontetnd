@@ -15,15 +15,20 @@
                    class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700">
                     Изменить
                 </a>
-                <form method="post"
-                      action="{% url 'results_domain:result-delete' result.id %}" 
-                      onsubmit="return confirm('Вы уверены, что хотите удалить эту анкету?');">
-                    {% csrf_token %}
-                    <button type="submit" 
-                            class="rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-600 transition hover:bg-red-100 hover:text-red-700">
-                        Удалить
-                    </button>
-                </form>
+<form method="post"
+      action="{% url 'results_domain:result-delete' result.id %}"
+      onsubmit="return confirm('Вы уверены, что хотите удалить эту анкету? Это действие необратимо.');">
+    {% csrf_token %}
+    <button type="submit"
+            class="rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-600 transition hover:bg-red-100 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+        <span class="flex items-center gap-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+            </svg>
+            Удалить
+        </span>
+    </button>
+</form>
             </div>
         </div>
         <div class="rounded-xl border border-gray-200 bg-white shadow-sm mb-8">
@@ -35,7 +40,7 @@
                     <dt class="text-sm font-medium text-gray-500">Тип чек-листа</dt>
                     <dd class="mt-1">
                         <span class="rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700">
-                            {{ result.checklist_type }}
+                            {{ result.checklist_type_display|default:result.checklist_type }}
                         </span>
                     </dd>
                 </div>
@@ -81,7 +86,7 @@
                                         {{ answer.field_name }}
                                     </td>
                                     <td class="px-6 py-4 text-sm text-gray-500">
-                                        {{ answer.field_type }}
+                                        {{ answer.field_type_display|default:answer.field_type_display }}
                                     </td>
                                     <td class="px-6 py-4 text-sm text-gray-900 font-medium">
                                         {% if answer.value == 'true' %}

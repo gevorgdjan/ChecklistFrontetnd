@@ -14,13 +14,14 @@ class ChecklistResultDeleteView(View):
     def post(self, request: HttpRequest, pk: int, *args,
              **kwargs) -> HttpResponse:
         try:
-            # --- РАБОЧИЙ ВАРИАНТ ---
             client = get_checklist_client()
+
             client.results.delete(result_id=pk)
 
-            # print(f"[MOCK] Успешное удаление анкеты {pk}")
-            # messages.success(request, "Анкета успешно удалена.")
+            messages.success(request, "Анкета успешно удалена.")
+
         except Exception as e:
-            messages.error(request, "Ошибка при удалении анкеты.")
+            print(f"[ERROR] Ошибка удаления анкеты {pk}: {e}")
+            messages.error(request, "Произошла ошибка при удалении анкеты.")
 
         return redirect('results_domain:result-list')

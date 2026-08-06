@@ -41,7 +41,7 @@
                                 <div class="mt-1 flex items-center gap-2">
                                     <p class="text-base font-bold text-gray-900">{{ result.equipment_uid }}</p>
                                     <span class="inline-block rounded-full bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700 border border-blue-100">
-                                        {{ result.checklist_type }}
+                                        {{ result.checklist_type_display|default:result.checklist_type }}
                                     </span>
                                 </div>
                             </div>

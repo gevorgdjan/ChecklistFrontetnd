@@ -33,3 +33,11 @@ class ResultsApi(BaseApi):
             json=data,
         )
 
+    def delete(self, result_id: int):
+        """
+        Отправляет DELETE запрос в REST API для удаления анкеты.
+        """
+        return self._client.request(
+            'DELETE',
+            path=f'{self.BASE_PATH}/{result_id}/',
+        )

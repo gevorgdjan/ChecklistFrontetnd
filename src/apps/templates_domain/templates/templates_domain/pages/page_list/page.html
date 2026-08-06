@@ -27,9 +27,9 @@
                 <label class="mb-1 block text-xs font-medium text-gray-700">Тип чек-листа</label>
                 <select name="checklist_type" class="rounded-lg border-gray-300 px-3 py-2 text-sm bg-white">
                     <option value="">Все типы</option>
-                    <option value="INSPECTION" {% if request.GET.checklist_type == 'INSPECTION' %}selected{% endif %}>Осмотр</option>
-                    <option value="ACCEPTANCE" {% if request.GET.checklist_type == 'ACCEPTANCE' %}selected{% endif %}>Приемка</option>
-                    <option value="HANDOVER" {% if request.GET.checklist_type == 'HANDOVER' %}selected{% endif %}>Сдача</option>
+                    <option value="INSPECTION" {% if request.GET.checklist_type == 'INSPECTION' %}selected{% endif %}>Осмотр (INSPECTION)</option>
+                    <option value="ACCEPTANCE" {% if request.GET.checklist_type == 'ACCEPTANCE' %}selected{% endif %}>Приемка (ACCEPTANCE)</option>
+                    <option value="HANDOVER" {% if request.GET.checklist_type == 'HANDOVER' %}selected{% endif %}>Сдача (HANDOVER)</option>
                 </select>
             </div>
             <button type="submit" class="rounded-lg bg-gray-800 px-4 py-2 text-sm font-medium text-white hover:bg-gray-900">
