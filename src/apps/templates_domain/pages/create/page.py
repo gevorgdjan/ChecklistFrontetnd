@@ -14,6 +14,8 @@ class ChecklistTemplateCreateView(TemplateView):
 
         payload = json.loads(request.POST['data'])
 
+        print(payload)
+
         # --- ЗАГЛУШКА ---
         # print("[MOCK] Создание нового шаблона:", payload)
 
