@@ -4,8 +4,8 @@ from apps.templates_domain.pages.delete.page import ChecklistTemplateDeleteView
 from apps.templates_domain.pages.detail.page import ChecklistTemplateDetailView
 from apps.templates_domain.pages.p_list.page import ChecklistTemplateListView
 from apps.templates_domain.pages.update.page import ChecklistTemplateUpdateView
-
 from apps.templates_domain.pages.create.page import ChecklistTemplateCreateView
+from apps.templates_domain.pages.history.page import ChecklistTemplateHistoryView
 
 app_name = 'templates_domain'
 
@@ -34,4 +34,8 @@ urlpatterns = [
         '<int:pk>/delete/',
         ChecklistTemplateDeleteView.as_view(),
         name='template-delete'),
+    path(
+        '<int:pk>/history/',
+        ChecklistTemplateHistoryView.as_view(),
+        name='template-history'),
 ]

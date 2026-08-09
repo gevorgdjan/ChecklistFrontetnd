@@ -11,75 +11,50 @@
                class="text-sm text-blue-600 hover:text-blue-700">
                 ← Назад к шаблону
             </a>
-
             <h1 class="mt-2 text-2xl font-semibold text-gray-900">
                 Редактирование шаблона
             </h1>
-
             <p class="mt-1 text-sm text-gray-500" x-text="template.equipment_uid"></p>
         </div>
     </div>
-
-    <form method="post" @submit="beforeSubmit">
+    <form method="post" @submit="beforeSubmit($event)">
         {% csrf_token %}
-
         <input
             type="hidden"
             name="data"
             x-model="serialized"
         >
-
         <div class="space-y-8">
-
             <div class="rounded-xl border border-gray-200 bg-white shadow-sm">
-
                 <div class="border-b border-gray-200 px-6 py-5">
                     <h2 class="text-lg font-semibold">
                         Основная информация
                     </h2>
                 </div>
-
                 <div class="grid grid-cols-2 gap-6 p-6">
-
                     <div>
-                        <label class="mb-2 block text-sm font-medium">
-                            UID оборудования
-                        </label>
-
-                        <input
-                            x-model="template.equipment_uid"
-                            class="w-full rounded-lg border border-gray-300 px-3 py-2"
-                        >
+                        <label class="mb-2 block text-sm font-medium">UID оборудования</label>
+                        <input x-model="template.equipment_uid"
+                               readonly title="Нельзя изменить оборудование в существующем шаблоне"
+                               class="w-full rounded-lg border border-gray-200 bg-gray-100 text-gray-500 px-3 py-2 cursor-not-allowed">
                     </div>
-
                     <div>
-                        <label class="mb-2 block text-sm font-medium">
-                            Тип чек-листа
-                        </label>
-
-                        <select
-                            x-model="template.checklist_type"
-                            class="w-full rounded-lg border border-gray-300 px-3 py-2"
-                        >
+                        <label class="mb-2 block text-sm font-medium">Тип чек-листа</label>
+                        <select x-model="template.checklist_type"
+                                disabled title="Нельзя изменить тип в существующем шаблоне"
+                                class="w-full rounded-lg border border-gray-200 bg-gray-100 text-gray-500 px-3 py-2 cursor-not-allowed">
                             <option value="INSPECTION">Осмотр (INSPECTION)</option>
                             <option value="ACCEPTANCE">Приёмка (ACCEPTANCE)</option>
                             <option value="HANDOVER">Сдача (HANDOVER)</option>
                         </select>
                     </div>
-
                 </div>
-
             </div>
-
-
             <div class="rounded-xl border border-gray-200 bg-white shadow-sm">
-
                 <div class="flex items-center justify-between border-b border-gray-200 px-6 py-5">
-
                     <h2 class="text-lg font-semibold">
                         Поля
                     </h2>
-
                     <button
                         type="button"
                         @click="addField"
@@ -87,46 +62,34 @@
                     >
                         + Добавить поле
                     </button>
-
                 </div>
-
-
                 <div class="divide-y divide-gray-200">
-
                     <template x-for="(field,index) in template.fields" :key="index">
-
                         <div class="space-y-4 p-6">
-
                             <div class="grid grid-cols-12 gap-4">
-
                                 <div class="col-span-1">
                                     <label class="mb-2 block text-xs">
                                         #
                                     </label>
-
                                     <input
                                         type="number"
                                         x-model.number="field.order"
                                         class="w-full rounded-lg border border-gray-300 px-2 py-2"
                                     >
                                 </div>
-
-                                <div class="col-span-5">
+                                <div class="col-span-3">
                                     <label class="mb-2 block text-xs">
                                         Название
                                     </label>
-
                                     <input
                                         x-model="field.name"
                                         class="w-full rounded-lg border border-gray-300 px-3 py-2"
                                     >
                                 </div>
-
                                 <div class="col-span-3">
                                     <label class="mb-2 block text-xs">
                                         Тип
                                     </label>
-
                                     <select
                                         x-model="field.field_type"
                                         class="w-full rounded-lg border border-gray-300 px-3 py-2"
@@ -138,9 +101,13 @@
                                         <option value="AUTO">Авто (AUTO)</option>
                                     </select>
                                 </div>
-
+                                <div class="col-span-2 flex items-center pt-6">
+                                    <label class="inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" x-model="field.is_required" class="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                        <span class="ml-2 text-xs font-medium text-gray-700">Обязательно</span>
+                                    </label>
+                                </div>
                                 <div class="col-span-3 flex items-end justify-end">
-
                                     <button
                                         type="button"
                                         @click="removeField(index)"
@@ -148,22 +115,14 @@
                                     >
                                         Удалить
                                     </button>
-
                                 </div>
-
                             </div>
-
-
                             <template x-if="field.field_type === 'CHOICE'">
-
                                 <div class="rounded-lg bg-gray-50 p-4">
-
                                     <div class="mb-3 flex items-center justify-between">
-
                                         <div class="font-medium">
                                             Варианты выбора
                                         </div>
-
                                         <button
                                             type="button"
                                             @click="addChoice(field)"
@@ -171,25 +130,19 @@
                                         >
                                             + Добавить
                                         </button>
-
                                     </div>
-
                                     <template x-for="(choice,cIndex) in field.choices">
-
                                         <div class="mb-2 flex gap-2">
-
                                             <input
                                                 x-model="choice.value"
                                                 placeholder="Значение"
                                                 class="flex-1 rounded border border-gray-300 px-3 py-2"
                                             >
-
                                             <input
                                                 type="number"
                                                 x-model.number="choice.order"
                                                 class="w-24 rounded border border-gray-300 px-3 py-2"
                                             >
-
                                             <button
                                                 type="button"
                                                 @click="field.choices.splice(cIndex,1)"
@@ -197,46 +150,31 @@
                                             >
                                                 ×
                                             </button>
-
                                         </div>
-
                                     </template>
-
                                 </div>
-
                             </template>
-
                         </div>
-
                     </template>
-
                 </div>
-
             </div>
-
             <div class="flex justify-end gap-3">
-
                 <a
                     href="{% url 'templates_domain:template-detail' template.id %}"
                     class="rounded-lg border border-gray-300 px-4 py-2 hover:bg-gray-50"
                 >
                     Отмена
                 </a>
-
                 <button
                     type="submit"
                     class="rounded-lg bg-blue-600 px-5 py-2 font-medium text-white hover:bg-blue-700"
                 >
                     Сохранить
                 </button>
-
             </div>
-
         </div>
-
     </form>
 </div>
-
 
 <script>
 function templateEditor(template) {
@@ -251,6 +189,7 @@ function templateEditor(template) {
             this.template.fields.push({
                 name: '',
                 field_type: 'STRING',
+                is_required: true,
                 order: this.template.fields.length + 1,
                 choices: [],
             });
@@ -267,7 +206,16 @@ function templateEditor(template) {
             });
         },
 
-        beforeSubmit() {
+        beforeSubmit(event) {
+            const orders = this.template.fields.map(f => Number(f.order));
+            const uniqueOrders = new Set(orders);
+
+            if (orders.length !== uniqueOrders.size) {
+                alert("Ошибка: Порядковые номера полей (#) должны быть уникальными!");
+                event.preventDefault();
+                return;
+            }
+
             this.serialized = JSON.stringify({
                 equipment_uid: this.template.equipment_uid,
                 checklist_type: this.template.checklist_type,

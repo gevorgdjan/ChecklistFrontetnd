@@ -1,6 +1,6 @@
 {% extends 'ui/layouts/base.html' %}
 {% block content %}
-<div class="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
+<div class="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8" xmlns:x-bind="http://www.w3.org/1999/xhtml">
     <div class="mb-6">
         <a href="{% url 'results_domain:result-detail' result_id %}" class="text-sm text-blue-600 hover:text-blue-700">← Вернуться к анкете</a>
         <h1 class="mt-2 text-2xl font-semibold text-gray-900">Редактирование чек-листа №{{ result_id }}</h1>
@@ -23,16 +23,17 @@
                     <template x-for="field in template.fields" :key="field.id">
                         <div class="border-b border-gray-100 pb-4 last:border-0 last:pb-0">
                             <label class="block text-sm font-medium text-gray-800 mb-2">
-                                <span x-text="field.name"></span> <span class="text-red-500">*</span>
+                                <span x-text="field.name"></span>
+                                <template x-if="field.is_required"><span class="text-red-500">*</span></template>
                             </label>
                             <template x-if="field.field_type === 'STRING'">
-                                <input type="text" x-model="answers[field.id]" required class="w-full max-w-lg rounded-lg border-gray-300 px-3 py-2">
+                                <input type="text" x-model="answers[field.id]" x-bind:required="field.is_required" class="w-full max-w-lg rounded-lg border-gray-300 px-3 py-2">
                             </template>
                             <template x-if="field.field_type === 'INTEGER'">
-                                <input type="number" x-model="answers[field.id]" required class="w-full max-w-xs rounded-lg border-gray-300 px-3 py-2">
+                                <input type="number" x-model="answers[field.id]" x-bind:required="field.is_required" class="w-full max-w-xs rounded-lg border-gray-300 px-3 py-2">
                             </template>
                             <template x-if="field.field_type === 'CHOICE'">
-                                <select x-model="answers[field.id]" required class="w-full max-w-xs rounded-lg border-gray-300 px-3 py-2 bg-white">
+                                <select x-model="answers[field.id]" x-bind:required="field.is_required" class="w-full max-w-xs rounded-lg border-gray-300 px-3 py-2 bg-white">
                                     <option value="" disabled>Выберите вариант...</option>
                                     <template x-for="choice in field.choices">
                                         <option :value="choice.value" x-text="choice.value" :selected="answers[field.id] === choice.value"></option>

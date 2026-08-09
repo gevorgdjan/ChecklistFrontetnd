@@ -13,29 +13,34 @@ class ChecklistResultCreateView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        try:
+            client = get_checklist_client()
+            context['equipment_list'] = client.templates.get_equipments()
+        except Exception:
+            context['equipment_list'] = []
+
         equipment_uid = self.request.GET.get('equipment_uid')
         checklist_type = self.request.GET.get('checklist_type')
 
         if equipment_uid and checklist_type:
+            print(f"[DEBUG] Ищем бланк: UID={equipment_uid}, TYPE={checklist_type}")
             try:
                 context.update(get_checklist_form_context(equipment_uid, checklist_type))
+                print("[DEBUG] Шаблон успешно добавлен в контекст!")
             except Exception as e:
-                messages.error(self.request, "Шаблон не найден")
+                print(f"[DEBUG ERROR] Ошибка генерации бланка: {e}")
+                messages.error(self.request, str(e))
+
         return context
 
     def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
-        """Обрабатывает AJAX-запрос от Alpine.js со строгим JSON"""
         try:
             payload = json.loads(request.body)
 
             client = get_checklist_client()
             client.results.create(data=payload)
 
-            print("[MOCK] Сохранение заполненного чек-листа через Fetch:", payload)
-
             return JsonResponse({"status": "success", "redirect_url": "/results/"})
-
-        except json.JSONDecodeError:
-            return JsonResponse({"status": "error", "message": "Неверный формат JSON"}, status=400)
         except Exception as e:
             return JsonResponse({"status": "error", "message": str(e)}, status=400)

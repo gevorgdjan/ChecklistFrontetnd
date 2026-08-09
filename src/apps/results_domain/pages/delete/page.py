@@ -11,17 +11,16 @@ class ChecklistResultDeleteView(View):
     Обрабатывает удаление заполненной анкеты.
     """
 
-    def post(self, request: HttpRequest, pk: int, *args,
-             **kwargs) -> HttpResponse:
+    def post(self, request: HttpRequest, pk: int, *args, **kwargs) -> HttpResponse:
         try:
             client = get_checklist_client()
 
             client.results.delete(result_id=pk)
 
             messages.success(request, "Анкета успешно удалена.")
-
         except Exception as e:
             print(f"[ERROR] Ошибка удаления анкеты {pk}: {e}")
             messages.error(request, "Произошла ошибка при удалении анкеты.")
 
+        # 2. ИСПРАВЛЕНИЕ: Редирект должен вести на список АНКЕТ, а не шаблонов!
         return redirect('results_domain:result-list')

@@ -6,10 +6,16 @@
             <div>
                 <h1 class="text-2xl font-semibold text-gray-900">Заполненные чек-листы</h1>
               <form method="GET" class="mb-6 flex flex-wrap items-end gap-4 rounded-xl border border-gray-200 bg-gray-50 p-4">
-            <div>
+           <div>
                 <label class="mb-1 block text-xs font-medium text-gray-700">UID Оборудования</label>
                 <input type="text" name="equipment_uid" value="{{ request.GET.equipment_uid }}"
-                       placeholder="EQ-123..." class="rounded-lg border-gray-300 px-3 py-2 text-sm">
+                       list="equipment-uids-list" autocomplete="off"
+                       placeholder="Начните вводить..." class="rounded-lg border-gray-300 px-3 py-2 text-sm w-full">
+                <datalist id="equipment-uids-list">
+                    {% for eq in equipment_list %}
+                        <option value="{{ eq }}"></option>
+                    {% endfor %}
+                </datalist>
             </div>
             <div>
                 <label class="mb-1 block text-xs font-medium text-gray-700">UID Пользователя</label>

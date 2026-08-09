@@ -1,0 +1,37 @@
+{% extends 'ui/layouts/base.html' %}
+{% block content %}
+<div class="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
+    <div class="mb-8 flex items-center justify-between">
+        <div>
+            <a href="{% url 'templates_domain:template-detail' current_id %}" class="text-sm text-blue-600 hover:text-blue-700">← Назад к шаблону</a>
+            <h1 class="mt-2 text-2xl font-semibold text-gray-900">История версий шаблона</h1>
+            {% if history %}
+                <p class="mt-1 text-sm text-gray-500">Оборудование: {{ history.0.equipment_uid }} ({{ history.0.checklist_type_display }})</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="space-y-4">
+        {% for version in history %}
+            <div class="rounded-xl border {% if version.is_deprecated %} border-gray-200 bg-gray-50 {% else %} border-green-200 bg-white shadow-sm {% endif %} p-5 flex items-center justify-between">
+                <div>
+                    <div class="flex items-center gap-3">
+                        <h2 class="text-lg font-bold text-gray-900">Версия #{{ forloop.revcounter }}</h2>
+                        {% if version.is_deprecated %}
+                            <span class="rounded bg-gray-200 px-2.5 py-1 text-xs font-medium text-gray-600">В архиве</span>
+                        {% else %}
+                            <span class="rounded bg-green-100 px-2.5 py-1 text-xs font-medium text-green-800">Актуальная</span>
+                        {% endif %}
+                    </div>
+                    <div class="mt-2 text-sm text-gray-600 space-y-1">
+                        <p>Создан: <strong>{{ version.created_at|date:"d.m.Y в H:i" }}</strong></p>
+                        <p>Содержит полей: <strong>{{ version.fields|length }}</strong></p>
+                    </div>
+                </div>
+                <a href="{% url 'templates_domain:template-detail' version.id %}" class="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
+                    Посмотреть структуру
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

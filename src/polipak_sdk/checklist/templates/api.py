@@ -9,38 +9,22 @@ class TemplatesApi(BaseApi):
         params = {}
         if equipment_uid: params['equipment_uid'] = equipment_uid
         if checklist_type: params['checklist_type'] = checklist_type
+        return self._client.request('GET', path=f'{self.BASE_PATH}/', params=params)
 
-        return self._client.request('GET', path=f'{self.BASE_PATH}/',
-                                    params=params)
+    def get(self, template_id: int):
+        return self._client.request('GET', path=f'{self.BASE_PATH}/{template_id}/')
 
-    def get(self, template_id):
-        return self._client.request(
-            'GET',
-            path=self.BASE_PATH + '/' + str(template_id) + '/',
-        )
+    def create(self, data: dict):
+        return self._client.request('POST', path=f'{self.BASE_PATH}/', json=data)
 
-    def create(self, data):
-
-        print(data)
-        return self._client.request(
-            'POST',
-            path=self.BASE_PATH + '/',
-            json=data,
-        )
-
-    def update(
-        self,
-        template_id: int,
-        data: dict,
-    ):
-        return self._client.request(
-            'PUT',
-            path=f'{self.BASE_PATH}/{template_id}/',
-            json=data,
-        )
+    def update(self, template_id: int, data: dict):
+        return self._client.request('PUT', path=f'{self.BASE_PATH}/{template_id}/', json=data)
 
     def delete(self, template_id: int):
-        return self._client.request(
-            'DELETE',
-            path=f'{self.BASE_PATH}/{template_id}/',
-        )
+        return self._client.request('DELETE', path=f'{self.BASE_PATH}/{template_id}/')
+
+    def history(self, template_id: int):
+        return self._client.request('GET', path=f'{self.BASE_PATH}/{template_id}/history/')
+
+    def get_equipments(self):
+        return self._client.request('GET', path=f'{self.BASE_PATH}/equipments/')

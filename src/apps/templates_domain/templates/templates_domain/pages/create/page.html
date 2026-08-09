@@ -11,24 +11,19 @@
                class="text-sm text-blue-600 hover:text-blue-700">
                 ← Назад к списку шаблонов
             </a>
-
             <h1 class="mt-2 text-2xl font-semibold text-gray-900">
                 Создание нового шаблона
             </h1>
         </div>
     </div>
-
-    <form method="post" @submit="beforeSubmit">
+    <form method="post" @submit="beforeSubmit($event)">
         {% csrf_token %}
-
         <input
             type="hidden"
             name="data"
             x-model="serialized"
         >
-
         <div class="space-y-8">
-            <!-- Блок 1: Основная информация -->
             <div class="rounded-xl border border-gray-200 bg-white shadow-sm">
                 <div class="border-b border-gray-200 px-6 py-5">
                     <h2 class="text-lg font-semibold">Основная информация</h2>
@@ -43,7 +38,6 @@
                             class="w-full rounded-lg border border-gray-300 px-3 py-2"
                         >
                     </div>
-
                     <div>
                         <label class="mb-2 block text-sm font-medium">Тип чек-листа</label>
                         <select
@@ -57,8 +51,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Блок 2: Поля шаблона -->
             <div class="rounded-xl border border-gray-200 bg-white shadow-sm">
                 <div class="flex items-center justify-between border-b border-gray-200 px-6 py-5">
                     <h2 class="text-lg font-semibold">Поля анкеты</h2>
@@ -70,55 +62,40 @@
                         + Добавить поле
                     </button>
                 </div>
-
                 <div class="divide-y divide-gray-200">
                     <template x-for="(field, index) in template.fields" :key="index">
                         <div class="space-y-4 p-6">
                             <div class="grid grid-cols-12 gap-4">
                                 <div class="col-span-1">
                                     <label class="mb-2 block text-xs">#</label>
-                                    <input
-                                        type="number"
-                                        x-model.number="field.order"
-                                        class="w-full rounded-lg border border-gray-300 px-2 py-2"
-                                    >
+                                    <input type="number" x-model.number="field.order" class="w-full rounded-lg border border-gray-300 px-2 py-2">
                                 </div>
-                                <div class="col-span-5">
+                                <div class="col-span-3">
                                     <label class="mb-2 block text-xs">Название</label>
-                                    <input
-                                        x-model="field.name"
-                                        required
-                                        class="w-full rounded-lg border border-gray-300 p
-
-
-x-3 py-2"
-                                    >
+                                    <input x-model="field.name" required class="w-full rounded-lg border border-gray-300 px-3 py-2">
                                 </div>
                                 <div class="col-span-3">
                                     <label class="mb-2 block text-xs">Тип</label>
-                                    <select
-                                        x-model="field.field_type"
-                                        class="w-full rounded-lg border border-gray-300 px-3 py-2"
-                                    >
-                                        <option value="STRING">Строка (STRING)</option>
-                                        <option value="INTEGER">Число (INTEGER)</option>
+                                    <select x-model="field.field_type" class="w-full rounded-lg border border-gray-300 px-3 py-2">
+                                        <option value="TEXT">Строка (TEXT)</option>
+                                        <option value="NUMBER">Число (NUMBER)</option>
                                         <option value="CHOICE">Выбор из списка (CHOICE)</option>
                                         <option value="CHECKBOX">Чекбокс (CHECKBOX)</option>
                                         <option value="AUTO">Авто (AUTO)</option>
                                     </select>
                                 </div>
-                                <div class="col-span-3 flex items-end justify-end">
-                                    <button
-                                        type="button"
-                                        @click="removeField(index)"
-                                        class="rounded-lg border border-red-300 px-3 py-2 text-red-600 hover:bg-red-50"
-                                    >
+                                <div class="col-span-3 flex items-center pt-6">
+                                    <label class="inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" x-model="field.is_required" class="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                        <span class="ml-2 text-xs font-medium text-gray-700">Обязательное</span>
+                                    </label>
+                                </div>
+                                <div class="col-span-2 flex items-end justify-end">
+                                    <button type="button" @click="removeField(index)" class="w-full rounded-lg border border-red-300 px-3 py-2 text-red-600 hover:bg-red-50 text-sm">
                                         Удалить
                                     </button>
                                 </div>
                             </div>
-
-                            <!-- Варианты выбора для типа CHOICE -->
                             <template x-if="field.field_type === 'CHOICE'">
                                 <div class="rounded-lg bg-gray-50 p-4">
                                     <div class="mb-3 flex items-center justify-between">
@@ -154,13 +131,9 @@ x-3 py-2"
                                         </div>
                                     </template>
                                 </div>
-
-
 </template>
                         </div>
                     </template>
-                    
-                    <!-- Сообщение, если полей нет -->
                     <template x-if="template.fields.length === 0">
                         <div class="p-8 text-center text-sm text-gray-500">
                             Добавьте первое поле для анкеты.
@@ -168,8 +141,6 @@ x-3 py-2"
                     </template>
                 </div>
             </div>
-
-            <!-- Блок 3: Кнопки сохранения -->
             <div class="flex justify-end gap-3">
                 <a
                     href="{% url 'templates_domain:template-list' %}"
@@ -191,7 +162,6 @@ x-3 py-2"
 <script>
 function templateCreator() {
     return {
-        // Инициализируем пустую структуру, готовую к заполнению
         template: {
             equipment_uid: '',
             checklist_type: 'INSPECTION',
@@ -203,6 +173,7 @@ function templateCreator() {
             this.template.fields.push({
                 name: '',
                 field_type: 'STRING',
+                is_required: true,
                 order: this.template.fields.length + 1,
                 choices: [],
             });
@@ -219,8 +190,16 @@ function templateCreator() {
             });
         },
 
-        beforeSubmit() {
-            // Подготавливаем JSON для отправки на наш бэкенд
+        beforeSubmit(event) {
+            const orders = this.template.fields.map(f => Number(f.order));
+            const uniqueOrders = new Set(orders);
+
+            if (orders.length !== uniqueOrders.size) {
+                alert("Ошибка: Порядковые номера полей (#) должны быть уникальными!");
+                event.preventDefault();
+                return;
+            }
+
             this.serialized = JSON.stringify({
                 equipment_uid: this.template.equipment_uid,
                 checklist_type: this.template.checklist_type,
